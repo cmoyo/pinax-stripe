@@ -15,6 +15,7 @@ from .actions import (
     plans,
     sources,
     subscriptions,
+    payouts,
     transfers
 )
 from .conf import settings
@@ -549,6 +550,16 @@ class TransferWebhook(Webhook):
             self.event
         )
 
+class PayoutWebhook(Webhook):
+
+    def process_webhook(self):
+        payouts.sync_payout(
+            stripe.Payout.retrieve(
+                self.event.message["data"]["object"]["id"],
+                stripe_account=self.event.stripe_account_stripe_id,
+            ),
+            self.event
+        )
 
 class TransferCreatedWebhook(TransferWebhook):
     name = "transfer.created"

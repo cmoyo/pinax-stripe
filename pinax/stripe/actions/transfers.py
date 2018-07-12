@@ -43,18 +43,13 @@ def sync_transfer(transfer, event=None):
         "destination": transfer.get("destination"),
         "destination_payment": transfer.get("destination_payment"),
         "event": event,
-        "failure_code": transfer.get("failure_code"),
-        "failure_message": transfer.get("failure_message"),
         "livemode": transfer.get("livemode"),
         "metadata": dict(transfer.get("metadata", {})),
-        "method": transfer.get("method"),
         "reversed": transfer.get("reversed"),
         "source_transaction": transfer.get("source_transaction"),
         "source_type": transfer.get("source_type"),
         "statement_descriptor": transfer.get("statement_descriptor"),
-        "status": transfer.get("status"),
         "transfer_group": transfer.get("transfer_group"),
-        "type": transfer.get("type")
     }
     obj, created = models.Transfer.objects.update_or_create(
         stripe_id=transfer["id"],

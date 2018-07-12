@@ -18,6 +18,7 @@ from .models import (
     Invoice,
     InvoiceItem,
     Plan,
+    Payout,
     Subscription,
     Transfer,
     TransferChargeFee,
@@ -401,13 +402,32 @@ class TransferChargeFeeInline(admin.TabularInline):
     max_num = 0
 
 
+class PayoutAdmin(ModelAdmin):
+    raw_id_fields = ["event", "stripe_account"]
+    list_display = [
+        "stripe_id",
+        "amount",
+        "status",
+        "arrival_date",
+        "status",
+        "description",
+        "stripe_account",
+    ]
+    search_fields = [
+        "stripe_id",
+        "event__stripe_id",
+        "=stripe_account__stripe_id",
+    ]
+    list_filter = [
+        AccountListFilter,
+    ]
+
 class TransferAdmin(ModelAdmin):
     Transfer
     raw_id_fields = ["event", "stripe_account"]
     list_display = [
         "stripe_id",
         "amount",
-        "status",
         "date",
         "description",
         "stripe_account",
